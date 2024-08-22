@@ -1,27 +1,43 @@
 from rest_framework import serializers
 
-from product.models.product import Product
+from product.models.product import Category, Product
 from product.serializers.category_serializer import CategorySerializer
 
 
-# Definindo um serializer para o modelo Product
 class ProductSerializer(serializers.ModelSerializer):
-    # Serializando as categorias associadas ao produto.
-    # `CategorySerializer` é usado para serializar as categorias.
-    # `many=True` indica que é uma lista de categorias, 
-    # pois um produto pode ter múltiplas categorias.
-    # `required=True` garante que o campo de categorias seja obrigatório.
-    categories = CategorySerializer(required=True, many=True)
+    # Campo que exibe os detalhes completos das categorias associadas ao produto.
+    # Este campo é somente leitura e permite múltiplas categorias.
+    categories = CategorySerializer(read_only=True, many=True)
+    
+    # Campo que permite a seleção de categorias por seus IDs 
+    # ao criar ou atualizar o produto.
+    # Este campo é somente para escrita (write_only) e permite múltiplas categorias.
+    categories_id = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all(), write_only=True, many=True
+    )
 
-    # Classe interna Meta para definir as configurações adicionais do serializer
     class Meta:
-        # Especificando que o serializer está associado ao modelo Product
         model = Product
-        # Definindo os campos que serão incluídos na serialização
+        # Campos que serão expostos pela API.
         fields = [
-            "title",       # Campo do título do produto
-            "description", # Campo da descrição do produto
-            "price",       # Campo do preço do produto
-            "active",      # Campo para indicar se o produto está ativo ou não
-            "categories",  # Campo das categorias associadas ao produto
+            "id",
+            "title",
+            "description",
+            "price",
+            "active",
+            "categories",  # Detalhes completos das categorias.
+            "categories_id",  # IDs das categorias para criação/atualização.
         ]
+
+    def create(self, validated_data):
+        # Extrai os IDs das categorias do payload validado.
+        category_data = validated_data.pop("categories_id")
+
+        # Cria a instância do produto com os dados restantes.
+        product = Product.objects.create(**validated_data)
+        
+        # Adiciona cada categoria associada ao produto.
+        for category in category_data:
+            product.categories.add(category)
+
+        return product

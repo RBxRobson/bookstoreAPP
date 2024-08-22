@@ -16,3 +16,4 @@ class CategorySerializer(serializers.ModelSerializer):
             "description", # Campo da descrição da categoria
             "active",      # Campo para indicar se a categoria está ativa ou não
         ]
+        extra_kwargs = {'slug': {'required': False}}

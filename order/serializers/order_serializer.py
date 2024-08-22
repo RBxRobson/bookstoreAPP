@@ -1,33 +1,46 @@
 from rest_framework import serializers
 
 from order.models import Order
+from product.models import Product
 from product.serializers.product_serializer import ProductSerializer
 
-# Definindo um serializer para o modelo Order
+
 class OrderSerializer(serializers.ModelSerializer):
-    # Serializando os produtos associados ao pedido. 
-    # `ProductSerializer` é usado para serializar os produtos. 
-    # `many=True` indica que é uma lista de produtos, não um único produto.
-    # `required=True` garante que o campo seja obrigatório.
-    product = ProductSerializer(required=True, many=True)
+    # Campo que exibe os detalhes dos produtos associados ao pedido
+    product = ProductSerializer(read_only=True, many=True)
     
-    # Definindo um campo que será preenchido usando um método customizado.
+    # Campo para permitir a seleção dos produtos por ID ao criar ou atualizar
+    products_id = serializers.PrimaryKeyRelatedField(
+        queryset=Product.objects.all(), write_only=True, many=True
+    )
+
+    # Campo que calcula o total do pedido
     total = serializers.SerializerMethodField()
 
-    # Método para calcular o total do pedido, 
-    # somando o preço de todos os produtos.
-    # `get_total` é um nome padrão usado pelo DRF 
-    # para campos criados com `SerializerMethodField`.
-    # O `instance` é a instância atual de Order sendo serializada.
     def get_total(self, instance):
-        # Calcula o total somando o preço de cada produto.
-        # `instance.product.all()` retorna todos os produtos relacionados ao pedido.
+        # Calcula o total somando os preços de todos os produtos associados ao pedido
         total = sum([product.price for product in instance.product.all()])
         return total
 
-    # Definindo configurações adicionais para o serializer
     class Meta:
-        # Definindo o modelo base como Product
         model = Order
-        # Especificando os campos a serem incluídos na serialização
-        fields = ["product", "total"]
+
+        # Campos a serem exibidos na API
+        fields = ["product", "total", "user", "products_id"]  
+
+        # Torna o campo 'product' opcional
+        extra_kwargs = {"product": {"required": False}}  
+
+    def create(self, validated_data):
+        # Extrai os IDs dos produtos e o usuário do payload validado
+        product_data = validated_data.pop("products_id")
+        user_data = validated_data.pop("user")
+        
+        # Cria a instância do pedido com os dados restantes, incluindo o usuário
+        order = Order.objects.create(user=user_data)  
+
+        # Associa os produtos ao pedido
+        for product in product_data:
+            order.product.add(product)
+
+        return order
