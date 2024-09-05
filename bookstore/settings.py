@@ -134,5 +134,18 @@ INTERNAL_IPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 5
+    'PAGE_SIZE': 5,
+    # Define as classes de autenticação padrão a serem usadas.
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        # BasicAuthentication usa nome de usuário e senha enviados no cabeçalho HTTP.
+        'rest_framework.authentication.BasicAuthentication',
+        # SessionAuthentication usa a sessão do Django para autenticar usuários (usando cookies).
+        'rest_framework.authentication.SessionAuthentication',
+        # TokenAuthentication usa tokens para autenticar os usuários.
+        # Cada usuário recebe um token único que deve 
+        # ser enviado no cabeçalho HTTP Authorization
+        # como 'Token <seu_token>' para autenticação em cada requisição.
+        'rest_framework.authentication.TokenAuthentication'
+
+    ]
 }
