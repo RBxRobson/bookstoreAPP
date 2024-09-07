@@ -53,9 +53,9 @@ class TestProductViewSet(APITestCase):
 
         # Verifica se o título, preço e status ativo do 
         # produto correspondem aos dados criados no setup
-        self.assertEqual(product_data[0]["title"], self.product.title)
-        self.assertEqual(product_data[0]["price"], self.product.price)
-        self.assertEqual(product_data[0]["active"], self.product.active)
+        self.assertEqual(product_data["results"][0]["title"], self.product.title)
+        self.assertEqual(product_data["results"][0]["price"], self.product.price)
+        self.assertEqual(product_data["results"][0]["active"], self.product.active)
 
     # Teste para criar um novo produto
     def test_create_product(self):

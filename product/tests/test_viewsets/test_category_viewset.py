@@ -33,10 +33,14 @@ class CategoryViewSet(APITestCase):
         
         # Converte o conteúdo da resposta JSON para um dicionário
         category_data = json.loads(response.content)
+        
+        # # Inicia o depurador interativo
+        # import pdb
+        # pdb.set_trace()
 
         # Verifica se o título da primeira categoria retornada é igual 
         # ao título da categoria criada no setup
-        self.assertEqual(category_data[0]["title"], self.categories.title)
+        self.assertEqual(category_data["results"][0]["title"], self.categories.title)
 
     # Teste para criar uma nova categoria
     def test_create_category(self):

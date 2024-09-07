@@ -46,22 +46,22 @@ class TestOrderViewSet(APITestCase):
         # Verifica se o título do produto no pedido é igual 
         # ao título do produto criado.
         self.assertEqual(
-            order_data[0]["product"][0]["title"], self.product.title
+            order_data["results"][0]["product"][0]["title"], self.product.title
         )
         # Verifica se o preço do produto no pedido é igual 
         # ao preço do produto criado.
         self.assertEqual(
-            order_data[0]["product"][0]["price"], self.product.price
+            order_data["results"][0]["product"][0]["price"], self.product.price
         )
         # Verifica se o status ativo do produto no pedido é igual 
         # ao status do produto criado.
         self.assertEqual(
-            order_data[0]["product"][0]["active"], self.product.active
+            order_data["results"][0]["product"][0]["active"], self.product.active
         )
         # Verifica se o título da categoria do produto no pedido é igual 
         # ao título da categoria criada.
         self.assertEqual(
-            order_data[0]["product"][0]["categories"][0]["title"],
+            order_data["results"][0]["product"][0]["categories"][0]["title"],
             self.categories.title,
         )
 
