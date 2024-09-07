@@ -9,4 +9,4 @@ class OrderViewSet(ModelViewSet):
     serializer_class = OrderSerializer
     
     # Define o conjunto de dados que será manipulado pelo ViewSet
-    queryset = Order.objects.all()
+    queryset = Order.objects.all().order_by('id')
