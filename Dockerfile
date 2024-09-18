@@ -1,4 +1,4 @@
-FROM python:3.8.1-slim as python-base
+FROM python:3.12-slim AS python-base
 
 # Configurações do ambiente Python e pip
 ENV PYTHONUNBUFFERED=1 \
@@ -6,7 +6,6 @@ ENV PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=off \
     PIP_DISABLE_PIP_VERSION_CHECK=on \
     PIP_DEFAULT_TIMEOUT=100 \
-    POETRY_VERSION=1.0.3 \
     POETRY_HOME="/opt/poetry" \
     POETRY_VIRTUALENVS_IN_PROJECT=true \
     POETRY_NO_INTERACTION=1 \
@@ -20,25 +19,21 @@ ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
         curl \
-        build-essential
+        build-essential \
+        libpq-dev \
+        gcc \
+        python3-dev \
+        && rm -rf /var/lib/apt/lists/*
 
 # Instala o Poetry
-RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
-
-# Instala dependências do Postgres
-RUN apt-get update \
-    && apt-get -y install libpq-dev gcc \
-    && pip install psycopg2
+RUN curl -sSL https://install.python-poetry.org | python3 -
 
 # Define o diretório de trabalho e copia arquivos de dependências do projeto
 WORKDIR $PYSETUP_PATH
 COPY poetry.lock pyproject.toml ./
 
-# Instala dependências de runtime
+# Instala dependências de runtime sem dev
 RUN poetry install --no-dev
-
-# Instala dependências adicionais
-RUN poetry install
 
 # Define diretório de trabalho da aplicação
 WORKDIR /app
