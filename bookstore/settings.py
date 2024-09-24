@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -79,10 +80,21 @@ WSGI_APPLICATION = "bookstore.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# Configurações de banco de dados
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        # Define o engine do banco de dados (por padrão, SQLite)
+        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
+        # Define o nome do banco de dados ou o caminho do arquivo SQLite
+        "NAME": os.environ.get("SQL_DATABASE", BASE_DIR / "db.sqlite3"),
+        # Usuário do banco de dados (padrão: 'user')
+        "USER": os.environ.get("SQL_USER", "user"),
+        # Senha do banco de dados (padrão: 'password')
+        "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
+        # Host do banco de dados (padrão: 'localhost')
+        "HOST": os.environ.get("SQL_HOST", "localhost"),
+        # Porta do banco de dados (padrão: 5432 para PostgreSQL)
+        "PORT": os.environ.get("SQL_PORT", "5432"),
     }
 }
 
@@ -128,10 +140,6 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-INTERNAL_IPS = [
-    '127.0.0.1'
-]
-
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 5,
@@ -149,3 +157,18 @@ REST_FRAMEWORK = {
 
     ]
 }
+
+# Define os IPs internos para uso durante o desenvolvimento (ex.: com o Django Debug Toolbar)
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
+# Obtém a chave secreta do Django a partir das variáveis de ambiente
+SECRET_KEY = os.environ.get("SECRET_KEY")
+
+# Define se o modo de depuração está ativado (0: desativado, 1: ativado)
+DEBUG = int(os.environ.get("DEBUG", default=0))
+
+# 'DJANGO_ALLOWED_HOSTS' deve ser uma string de hosts separados por espaços.
+# Exemplo de variável de ambiente: 'DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]'
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
