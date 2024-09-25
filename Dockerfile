@@ -28,6 +28,11 @@ RUN apt-get update \
 # Instala o Poetry
 RUN curl -sSL https://install.python-poetry.org | python3 -
 
+# Instala dependencias do postgres
+RUN apt-get update \
+    && apt-get -y install libpq-dev gcc \
+    && pip install psycopg2
+
 # Define o diretório de trabalho e copia arquivos de dependências do projeto
 WORKDIR $PYSETUP_PATH
 COPY poetry.lock pyproject.toml ./
