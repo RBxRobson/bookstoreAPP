@@ -38,11 +38,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_extensions",
-    "order", 
+    "order",
     "product",
     "rest_framework",
     "rest_framework.authtoken",
-    "debug_toolbar"
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
@@ -141,21 +141,20 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 5,
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 5,
     # Define as classes de autenticação padrão a serem usadas.
-    'DEFAULT_AUTHENTICATION_CLASSES': [
+    "DEFAULT_AUTHENTICATION_CLASSES": [
         # BasicAuthentication usa nome de usuário e senha enviados no cabeçalho HTTP.
-        'rest_framework.authentication.BasicAuthentication',
+        "rest_framework.authentication.BasicAuthentication",
         # SessionAuthentication usa a sessão do Django para autenticar usuários (usando cookies).
-        'rest_framework.authentication.SessionAuthentication',
+        "rest_framework.authentication.SessionAuthentication",
         # TokenAuthentication usa tokens para autenticar os usuários.
-        # Cada usuário recebe um token único que deve 
+        # Cada usuário recebe um token único que deve
         # ser enviado no cabeçalho HTTP Authorization
         # como 'Token <seu_token>' para autenticação em cada requisição.
-        'rest_framework.authentication.TokenAuthentication'
-
-    ]
+        "rest_framework.authentication.TokenAuthentication",
+    ],
 }
 
 # Define os IPs internos para uso durante o desenvolvimento (ex.: com o Django Debug Toolbar)

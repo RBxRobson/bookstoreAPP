@@ -11,9 +11,9 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         # Definindo os campos que serão incluídos na serialização
         fields = [
-            "title",       # Campo do título da categoria
-            "slug",        # Campo do slug, geralmente usado em URLs
-            "description", # Campo da descrição da categoria
-            "active",      # Campo para indicar se a categoria está ativa ou não
+            "title",  # Campo do título da categoria
+            "slug",  # Campo do slug, geralmente usado em URLs
+            "description",  # Campo da descrição da categoria
+            "active",  # Campo para indicar se a categoria está ativa ou não
         ]
-        extra_kwargs = {'slug': {'required': False}}
+        extra_kwargs = {"slug": {"required": False}}

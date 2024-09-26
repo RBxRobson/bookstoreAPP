@@ -21,7 +21,7 @@ class UserFactory(factory.django.DjangoModelFactory):
 class OrderFactory(factory.django.DjangoModelFactory):
     # Associando a factory de User à Order através do campo user
     user = factory.SubFactory(UserFactory)
-    
+
     # Definindo configurações adicionais para a factory
     class Meta:
         # Especificando o modelo que essa factory cria

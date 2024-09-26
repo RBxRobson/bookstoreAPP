@@ -9,15 +9,15 @@ router = routers.SimpleRouter()
 # Registra o ViewSet de product no roteador.
 # O primeiro argumento é o prefixo da URL, ou seja, 'product/'.
 # O segundo argumento é o ViewSet que será associado à rota.
-# O basename define o nome base para as rotas geradas 
+# O basename define o nome base para as rotas geradas
 # (útil para construir URLs reversas).
-router.register(r'product', viewsets.ProductViewSet, basename="product")
+router.register(r"product", viewsets.ProductViewSet, basename="product")
 # Segue a mesma lógica anterior para registrar o ViewSet de category
-router.register(r'category', viewsets.CategoryViewSet, basename="category")
+router.register(r"category", viewsets.CategoryViewSet, basename="category")
 
-# Define as URLs da aplicação. 
+# Define as URLs da aplicação.
 # Aqui estamos incluindo todas as URLs geradas automaticamente pelo roteador.
 urlpatterns = [
     # Inclui todas as rotas do roteador na raiz ('').
-    path('', include(router.urls))  
+    path("", include(router.urls))
 ]

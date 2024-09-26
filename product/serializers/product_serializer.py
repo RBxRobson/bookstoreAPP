@@ -8,8 +8,8 @@ class ProductSerializer(serializers.ModelSerializer):
     # Campo que exibe os detalhes completos das categorias associadas ao produto.
     # Este campo é somente leitura e permite múltiplas categorias.
     categories = CategorySerializer(read_only=True, many=True)
-    
-    # Campo que permite a seleção de categorias por seus IDs 
+
+    # Campo que permite a seleção de categorias por seus IDs
     # ao criar ou atualizar o produto.
     # Este campo é somente para escrita (write_only) e permite múltiplas categorias.
     categories_id = serializers.PrimaryKeyRelatedField(
@@ -35,7 +35,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
         # Cria a instância do produto com os dados restantes.
         product = Product.objects.create(**validated_data)
-        
+
         # Adiciona cada categoria associada ao produto.
         for category in category_data:
             product.categories.add(category)

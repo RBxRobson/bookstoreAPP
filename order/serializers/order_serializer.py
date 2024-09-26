@@ -8,7 +8,7 @@ from product.serializers.product_serializer import ProductSerializer
 class OrderSerializer(serializers.ModelSerializer):
     # Campo que exibe os detalhes dos produtos associados ao pedido
     product = ProductSerializer(read_only=True, many=True)
-    
+
     # Campo para permitir a seleção dos produtos por ID ao criar ou atualizar
     products_id = serializers.PrimaryKeyRelatedField(
         queryset=Product.objects.all(), write_only=True, many=True
@@ -26,18 +26,18 @@ class OrderSerializer(serializers.ModelSerializer):
         model = Order
 
         # Campos a serem exibidos na API
-        fields = ["product", "total", "user", "products_id"]  
+        fields = ["product", "total", "user", "products_id"]
 
         # Torna o campo 'product' opcional
-        extra_kwargs = {"product": {"required": False}}  
+        extra_kwargs = {"product": {"required": False}}
 
     def create(self, validated_data):
         # Extrai os IDs dos produtos e o usuário do payload validado
         product_data = validated_data.pop("products_id")
         user_data = validated_data.pop("user")
-        
+
         # Cria a instância do pedido com os dados restantes, incluindo o usuário
-        order = Order.objects.create(user=user_data)  
+        order = Order.objects.create(user=user_data)
 
         # Associa os produtos ao pedido
         for product in product_data:

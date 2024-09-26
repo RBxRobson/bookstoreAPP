@@ -12,7 +12,7 @@ from product.models import Product
 
 # Classe de teste para o ViewSet de Product, utilizando o APITestCase
 class TestProductViewSet(APITestCase):
-    # Instância do APIClient, utilizada para fazer requisições 
+    # Instância do APIClient, utilizada para fazer requisições
     # simuladas durante os testes
     client = APIClient()
 
@@ -20,7 +20,7 @@ class TestProductViewSet(APITestCase):
     def setUp(self):
         # Cria um usuário para autenticação
         self.user = UserFactory()
-        
+
         # Gera um token de autenticação para o usuário
         token = Token.objects.create(user=self.user)
         token.save()
@@ -35,23 +35,21 @@ class TestProductViewSet(APITestCase):
     def test_get_all_product(self):
         # Recupera o token de autenticação gerado para o usuário
         token = Token.objects.get(user__username=self.user.username)
-        
+
         # Adiciona o token nas credenciais para autenticar a requisição
         self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
-        
-        # Faz uma requisição GET para a rota "product-list", 
+
+        # Faz uma requisição GET para a rota "product-list",
         # simulando a versão "v1"
-        response = self.client.get(
-            reverse("product-list", kwargs={"version": "v1"})
-        )
+        response = self.client.get(reverse("product-list", kwargs={"version": "v1"}))
 
         # Verifica se o status da resposta é HTTP 200 (OK)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        
+
         # Converte o conteúdo da resposta JSON para um dicionário
         product_data = json.loads(response.content)
 
-        # Verifica se o título, preço e status ativo do 
+        # Verifica se o título, preço e status ativo do
         # produto correspondem aos dados criados no setup
         self.assertEqual(product_data["results"][0]["title"], self.product.title)
         self.assertEqual(product_data["results"][0]["price"], self.product.price)
@@ -61,23 +59,19 @@ class TestProductViewSet(APITestCase):
     def test_create_product(self):
         # Recupera o token de autenticação gerado para o usuário
         token = Token.objects.get(user__username=self.user.username)
-        
+
         # Adiciona o token nas credenciais para autenticar a requisição
         self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
-        
+
         # Cria uma categoria para associar ao produto
         category = CategoryFactory()
-        
+
         # Prepara os dados que serão enviados no corpo da requisição POST
         data = json.dumps(
-            {
-                "title": "notebook",
-                "price": 800.00,
-                "categories_id": [category.id]
-            }
+            {"title": "notebook", "price": 800.00, "categories_id": [category.id]}
         )
 
-        # Faz uma requisição POST para a rota "product-list" 
+        # Faz uma requisição POST para a rota "product-list"
         # com os dados preparados, simulando a versão "v1"
         response = self.client.post(
             reverse("product-list", kwargs={"version": "v1"}),
