@@ -1,6 +1,6 @@
 name: Python Pull Request Workflow
-on: [pull_request]
 # O workflow será acionado em todo pull request no repositório.
+on: [pull_request]
 
 jobs:
   qa:
@@ -43,6 +43,7 @@ jobs:
       # Executa o linter Wemake Python Styleguide.
       - name: Wemake Python Styleguide
         uses: wemake-services/wemake-python-styleguide@0.19.2
+
         # Continua mesmo se o linter encontrar erros de estilo.
         continue-on-error: true
         with:
