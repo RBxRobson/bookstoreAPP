@@ -1,0 +1,56 @@
+name: Python Application
+
+# O workflow será acionado em todo push para o repositório.
+on:
+  push:
+    branches:
+      - main # Ações ocorrem somente em pushes para o branch "main".
+
+jobs:
+  build:
+    # Estrutura de matrix permite rodar em múltiplas versões de Python.
+    # Aqui, usamos Python 3.10 e acima.
+    strategy:
+      # Se um job falhar, os outros continuam rodando.
+      fail-fast: false
+      matrix:
+        # Testa em diferentes versões de Python.
+        python-version: [3.10, 3.11]
+
+    # O job será executado em uma máquina virtual Ubuntu.
+    runs-on: ubuntu-latest
+
+    steps:
+      # Primeiro, faz checkout do repositório.
+      - name: Checkout code
+        uses: actions/checkout@v3 # Garante que o código do repositório seja baixado.
+
+      # Define a versão do Python com base no matrix definido acima.
+      - name: Set up Python ${{ matrix.python-version }}
+        # Utiliza a action para configurar o Python.
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # Instala o Poetry, um gerenciador de dependências para Python.
+      - name: Install Poetry
+        run: |
+          python -m ensurepip  # Garante que o pip está disponível.
+          python -m pip install --upgrade pip  # Atualiza o pip.
+          python -m pip install --upgrade poetry  # Instala/atualiza o Poetry.
+
+      # Verifica se o Poetry está instalado corretamente, mostrando a ajuda.
+      - name: Check Poetry installation
+        # Exibe o comando de ajuda do Poetry para confirmação.
+        run: poetry --help
+
+      # Instala as dependências do projeto especificadas no arquivo pyproject.toml.
+      - name: Install dependencies
+        shell: bash
+        # Usa o Poetry para instalar dependências.
+        run: python -m poetry install
+
+      # Executa os testes do projeto Django.
+      - name: Run Tests
+        run: |
+          poetry run python manage.py test
