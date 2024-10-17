@@ -15,7 +15,7 @@ jobs:
       fail-fast: false
       matrix:
         # Testa em diferentes versões de Python.
-        python-version: [3.10, 3.11]
+        python-version: [3.12, 3.11]
 
     # O job será executado em uma máquina virtual Ubuntu.
     runs-on: ubuntu-latest
