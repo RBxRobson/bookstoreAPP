@@ -4,7 +4,7 @@ name: Python Application
 on:
   push:
     branches:
-      - main # Ações ocorrem somente em pushes para o branch "main".
+      - master # Ações ocorrem somente em pushes para o branch "master".
 
 jobs:
   build:
