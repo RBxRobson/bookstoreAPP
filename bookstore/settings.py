@@ -163,11 +163,12 @@ INTERNAL_IPS = [
 ]
 
 # Obtém a chave secreta do Django a partir das variáveis de ambiente
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = os.environ.get('SECRET_KEY', 'default-secret-key-for-tests')
 
 # Define se o modo de depuração está ativado (0: desativado, 1: ativado)
 DEBUG = int(os.environ.get("DEBUG", default=0))
 
 # 'DJANGO_ALLOWED_HOSTS' deve ser uma string de hosts separados por espaços.
 # Exemplo de variável de ambiente: 'DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]'
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(" ")
+

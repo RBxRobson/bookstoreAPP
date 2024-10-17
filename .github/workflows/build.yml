@@ -52,5 +52,8 @@ jobs:
 
       # Executa os testes do projeto Django.
       - name: Run Tests
+        env:
+          # Define o SECRET_KEY para o ambiente de testes
+          SECRET_KEY: test-secret-key
         run: |
           poetry run python manage.py test
