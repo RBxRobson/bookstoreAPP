@@ -1,9 +1,4 @@
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.authentication import (
-    BasicAuthentication,
-    SessionAuthentication,
-    TokenAuthentication,
-)
 from rest_framework.permissions import IsAuthenticated
 
 from product.models import Product
@@ -12,14 +7,6 @@ from product.serializers.product_serializer import ProductSerializer
 
 # Viewset para o modelo Product, que oferece operações CRUD automáticas.
 class ProductViewSet(ModelViewSet):
-    # Define as classes de Autenticação para
-    # sessão, credenciais básicas, ou token.
-    authentication_classes = [
-        SessionAuthentication,
-        BasicAuthentication,
-        TokenAuthentication,
-    ]
-
     # IsAuthenticated permite o acesso somente a usuários que estão autenticados.
     permission_classes = [IsAuthenticated]
 
