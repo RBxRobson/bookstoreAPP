@@ -1,0 +1,53 @@
+name: Python Pull Request Workflow
+on: [pull_request]
+# O workflow será acionado em todo pull request no repositório.
+
+jobs:
+  qa:
+    name: Quality check
+    runs-on: ubuntu-latest
+
+    steps:
+      # Passo que faz o checkout do código no repositório.
+      - uses: actions/checkout@v3
+
+      # Passo para configurar a versão do Python.
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      # Passo para instalar o Poetry.
+      - name: Install poetry
+        run: |
+          pip install -U pip  
+          pip install poetry
+          poetry install
+        env:
+          # Garante que o Poetry não crie um novo ambiente virtual.
+          POETRY_VIRTUALENVS_CREATE: false
+
+      # Verifica a instalação correta do Poetry mostrando a ajuda.
+      - name: View poetry --help
+        run: poetry --help
+
+      - name: Install dependencies
+        shell: bash
+        run: python -m poetry install
+
+      # Passo que executa os testes.
+      - name: Test
+        run: |
+          poetry run python manage.py test
+
+      # Executa o linter Wemake Python Styleguide.
+      - name: Wemake Python Styleguide
+        uses: wemake-services/wemake-python-styleguide@0.19.2
+        # Continua mesmo se o linter encontrar erros de estilo.
+        continue-on-error: true
+        with:
+          # Reporta os resultados diretamente na revisão do PR.
+          reporter: "github-pr-review"
+        env:
+          # Usa o token do GitHub para autenticação.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
