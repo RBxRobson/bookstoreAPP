@@ -28,6 +28,14 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SECURE_SSL_REDIRECT = True
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
 
 # Application definition
 INSTALLED_APPS = [
@@ -163,7 +171,7 @@ INTERNAL_IPS = [
 ]
 
 # Obtém a chave secreta do Django a partir das variáveis de ambiente
-SECRET_KEY = os.environ.get('SECRET_KEY', 'default-secret-key-for-tests')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'default-secret-key')
 
 # Define se o modo de depuração está ativado (0: desativado, 1: ativado)
 DEBUG = int(os.environ.get("DEBUG", default=0))
