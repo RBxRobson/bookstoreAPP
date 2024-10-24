@@ -17,6 +17,7 @@ factory-boy = "^3.3.1"
 gunicorn = "^23.0.0"
 whitenoise = "^6.7.0"
 dj-database-url = "^2.3.0"
+gitpython = "^3.1.43"
 
 [tool.poetry.group.dev.dependencies]
 factory-boy = "^3.3.0"
