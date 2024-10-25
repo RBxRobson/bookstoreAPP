@@ -25,6 +25,7 @@ urlpatterns = [
     path("__debug__", include(debug_toolbar.urls)),
     path("admin/", admin.site.urls),
     path("update_server/", views.update, name="update"),
+    path("hello/", views.hello_world, name="hello_world"),
     # Rota para obter um token de autenticação via 'obtain_auth_token'.
     path("api-token-auth/", obtain_auth_token, name="api_token_auth"),
     # Rota para a aplicação 'order'
