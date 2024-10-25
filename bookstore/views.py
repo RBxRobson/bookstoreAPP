@@ -8,7 +8,7 @@ import git
 @csrf_exempt
 def update(request):
     if request.method == "POST":
-        repo = git.Repo('/home/RBxRobson/bookstore')
+        repo = git.Repo('/home/RBxRobson/bookstoreAPP')
         origin = repo.remotes.origin
 
         origin.pull()
