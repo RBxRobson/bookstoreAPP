@@ -63,7 +63,8 @@ WSGI_APPLICATION = "bookstore.wsgi.application"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],  # Diretórios de templates
+        # Diretórios de templates
+        "DIRS": [os.path.join(BASE_DIR, "bookstore", "templates")],  
         "APP_DIRS": True,  # Carregar templates dos apps instalados
         "OPTIONS": {
             "context_processors": [
