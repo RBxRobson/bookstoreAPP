@@ -25,7 +25,7 @@ DEBUG = True
 SECRET_KEY = "django-insecure-f*k@=53bc5!shef1-6w+m$-g)kspbaljz%8k4(j7iuc-u2_dyd"
 
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'https://rbxrobson.pythonanywhere.com/']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'rbxrobson.pythonanywhere.com']
 
 # Application definition
 INSTALLED_APPS = [
